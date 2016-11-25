@@ -7,13 +7,8 @@ if (Meteor.isClient) {
   // return the id of the first document you can find
   Template.editor.helpers({
     docid:function(){
-      var doc = Documents.findOne();
-      if (doc){
-        return doc._id;
-      }
-      else {
-        return undefined;
-      }
+      setupCurrentDocument();
+      return Session.get("docid");
     },
     // configure the CodeMirror editor
     config:function(){
@@ -121,4 +116,14 @@ function fixObjectKeys(obj){
     newObj[key2] = obj[key];
   }
   return newObj;
+}
+
+function setupCurrentDocument() {
+  var doc;
+  if(!Session.get("docid")) {
+    doc = Documents.findOne();
+    if (doc) {
+      Session.set("docid", doc._id);
+    }
+  }
 }
