@@ -1,4 +1,4 @@
-// this collection stores all the documents 
+// this collection stores all the documents
 this.Documents = new Mongo.Collection("documents");
 // this collection stores sets of users that are editing documents
 EditingUsers = new Mongo.Collection("editingUsers");
@@ -14,7 +14,7 @@ if (Meteor.isClient) {
       else {
         return undefined;
       }
-    }, 
+    },
     // configure the CodeMirror editor
     config:function(){
       return function(editor){
@@ -26,9 +26,9 @@ if (Meteor.isClient) {
           // send the current code over to the iframe for rendering
           $("#viewer_iframe").contents().find("html").html(cm_editor.getValue());
           Meteor.call("addEditingUser");
-        });        
+        });
       }
-    }, 
+    },
   });
 
   Template.editingUsers.helpers({
@@ -48,7 +48,18 @@ if (Meteor.isClient) {
       return users;
     }
   })
- 
+
+  /////////
+  ///EVENTS
+  /////////
+
+  Template.navbar.events({
+    "click .js-add-doc":function(event){
+      event.preventDefault();
+      console.log("add new doc");
+    }
+  })
+
 }// end isClient...
 
 if (Meteor.isServer) {
@@ -61,7 +72,7 @@ if (Meteor.isServer) {
 }
 // methods that provide write access to the data
 Meteor.methods({
-  // allows changes to the editing users collection 
+  // allows changes to the editing users collection
   addEditingUser:function(){
     var doc, user, eusers;
     doc = Documents.findOne();
@@ -72,8 +83,8 @@ Meteor.methods({
     eusers = EditingUsers.findOne({docid:doc._id});
     if (!eusers){// no editing users have been stored yet
       eusers = {
-        docid:doc._id, 
-        users:{}, 
+        docid:doc._id,
+        users:{},
       };
     }
     user.lastEdit = new Date();
@@ -83,8 +94,8 @@ Meteor.methods({
   }
 })
 
-// this renames object keys by removing hyphens to make the compatible 
-// with spacebars. 
+// this renames object keys by removing hyphens to make the compatible
+// with spacebars.
 function fixObjectKeys(obj){
   var newObj = {};
   for (key in obj){
@@ -93,9 +104,3 @@ function fixObjectKeys(obj){
   }
   return newObj;
 }
-
-  
-
-
-
-
