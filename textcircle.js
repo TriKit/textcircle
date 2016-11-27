@@ -51,11 +51,16 @@ if (Meteor.isClient) {
   Template.navbar.events({
     "click .js-add-doc":function(event){
       event.preventDefault();
-      console.log("add new doc");
+      console.log("Add a new doc!");
       if(!Meteor.user()) {
         alert("You need to login first!");
       } else {
-        Meteor.call("addDoc");
+        var id = Meteor.call("addDoc", function(err, res) {
+          if(!err) {
+            console.log("event callback received id " + res);
+            Session.set("docid", res);
+          }
+        });
       }
     }
   })
@@ -82,7 +87,9 @@ Meteor.methods({
         createdOn: new Date(),
         title:"my new doc"
       };
-      Documents.insert(doc);
+      var id = Documents.insert(doc);
+      console.log("addDoc method: got an id " + id);
+      return id;
     }
   },
   // allows changes to the editing users collection
