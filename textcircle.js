@@ -93,6 +93,14 @@ if (Meteor.isClient) {
     }
   })
 
+  Template.docMeta.events({
+    "click .js-tog-private": function(event) {
+      console.log(event.target.checked);
+      var doc = {_id:Session.get("docid"), isPrivate:event.target.checked};
+      Meteor.call("updateDocPrivacy", doc);
+    }
+  })
+
 }// end isClient...
 
 if (Meteor.isServer) {
@@ -118,6 +126,15 @@ Meteor.methods({
       var id = Documents.insert(doc);
       console.log("addDoc method: got an id " + id);
       return id;
+    }
+  },
+  
+  updateDocPrivacy:function(doc){
+    console.log(doc);
+    var realDoc = Documents.findOne({_id:doc._id, owner:this.userId});
+    if(realDoc) {
+      realDoc.isPrivate = doc.isPrivate;
+      Documents.update({_id:doc._id}, realDoc);
     }
   },
   // allows changes to the editing users collection
