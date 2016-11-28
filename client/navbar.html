@@ -2,7 +2,7 @@
 
   <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
-        <a class="navbar-brand" href="#">TextCircle</a>
+        <a class="navbar-brand" href="/">TextCircle</a>
         <ul class="nav navbar-nav">
           <li>
             <a href="#" class="js-add-doc">
@@ -15,7 +15,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Documents<span class="caret"></span></a>
             <ul class="dropdown-menu">
               {{#each documents}}
-                <li><a href="#" class="js-load-doc">{{title}}</a></li>
+                <li><a href="/documents/{{_id}}" class="">{{title}}</a></li>
               {{/each}}
             </ul>
           </li>
