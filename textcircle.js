@@ -4,6 +4,9 @@ this.Documents = new Mongo.Collection("documents");
 EditingUsers = new Mongo.Collection("editingUsers");
 
 if (Meteor.isClient) {
+  Meteor.subscribe("documents");
+  Meteor.subscribe("editingUsers");
+
   // return the id of the first document you can find
   Template.editor.helpers({
     docid:function(){
@@ -46,7 +49,7 @@ if (Meteor.isClient) {
 
   Template.navbar.helpers({
     documents: function() {
-      return Documents.find({});
+      return Documents.find({isPrivate:false});
     }
   })
 
@@ -110,6 +113,14 @@ if (Meteor.isServer) {
         Documents.insert({title:"my new document"});
     }
   });
+
+  Meteor.publish("documents", function() {
+    return Documents.find({isPrivate:false});
+  });
+
+  Meteor.publish("editingUsers", function() {
+    return EditingUsers.find();
+  });
 }
 // methods that provide write access to the data
 Meteor.methods({
@@ -128,7 +139,7 @@ Meteor.methods({
       return id;
     }
   },
-  
+
   updateDocPrivacy:function(doc){
     console.log(doc);
     var realDoc = Documents.findOne({_id:doc._id, owner:this.userId});
