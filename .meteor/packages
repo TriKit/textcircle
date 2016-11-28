@@ -25,3 +25,4 @@ stylus
 accounts-password
 ian:accounts-ui-bootstrap-3
 babrahams:editable-text
+iron:router
