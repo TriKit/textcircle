@@ -1,5 +1,15 @@
 // methods that provide write access to the data
 Meteor.methods({
+  addComment: function(comment){
+    console.log("addComment method running");
+    if (this.userId) {
+      comment.createdOn = new Date();
+      comment.userId = this.userId;
+      return Comments.insert(comment);
+    }
+    return;
+  },
+
   addDoc:function(){
     var doc;
     if (!this.userId) {
