@@ -1,5 +1,6 @@
 Meteor.subscribe("documents");
 Meteor.subscribe("editingUsers");
+Meteor.subscribe("comments");
 
 Router.configure({
   layoutTemplate: 'ApplicationLayout'
@@ -101,6 +102,12 @@ Template.docList.helpers({
 Template.insertCommentForm.helpers({
   docid:function() {
     return Session.get("docid");
+  }
+})
+
+Template.commentList.helpers({
+  comments: function() {
+    return Comments.find({docid:Session.get("docid")});
   }
 })
 /////////
